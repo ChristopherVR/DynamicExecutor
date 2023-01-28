@@ -30,29 +30,6 @@ namespace DynamicModule.Services;
 /// </summary>
 public sealed class DynamicCodeService : IDynamicCodeService
 {
-    // References are made static to help with performance.
-    private static readonly List<MetadataReference> _references = new(AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location))
-            .Select(a => a.Location)
-            .Select(r => MetadataReference.CreateFromFile(r))
-            .ToArray()
-        .Concat(Assembly.GetEntryAssembly() is null ? Enumerable.Empty<MetadataReference>() : new List<MetadataReference>(Assembly
-            .GetEntryAssembly()!
-            .GetReferencedAssemblies()
-            .Where(a => !string.IsNullOrWhiteSpace(Assembly.Load(a).Location))
-            .Select(y => MetadataReference.CreateFromFile(Assembly.Load(y).Location))) { MetadataReference.CreateFromFile(Assembly.GetEntryAssembly()!.Location) }))
-    {
-        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-        MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
-        MetadataReference.CreateFromFile(typeof(Task<>).Assembly.Location),
-        MetadataReference.CreateFromFile(typeof(Task).Assembly.Location),
-        // Default netstandard assembly is required.
-        MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0").Location),
-        MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.1.0.0").Location),
-        MetadataReference.CreateFromFile(Assembly.GetCallingAssembly().Location),
-        MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location),
-    };
-
     private byte[]? _generatedCode;
     private readonly ILogger _logger;
     private readonly IHttpContextAccessor _context;
@@ -75,6 +52,28 @@ public sealed class DynamicCodeService : IDynamicCodeService
     }
 
     #region Helpers
+    private List<MetadataReference> GetMetadataReferences() => new(AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location))
+            .Select(a => a.Location)
+            .Select(r => MetadataReference.CreateFromFile(r))
+            .ToArray()
+        .Concat(Assembly.GetEntryAssembly() is null ? Enumerable.Empty<MetadataReference>() : new List<MetadataReference>(Assembly
+            .GetEntryAssembly()!
+            .GetReferencedAssemblies()
+            .Where(a => !string.IsNullOrWhiteSpace(Assembly.Load(a).Location))
+            .Select(y => MetadataReference.CreateFromFile(Assembly.Load(y).Location))) { MetadataReference.CreateFromFile(Assembly.GetEntryAssembly()!.Location) }))
+    {
+        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+        MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+        MetadataReference.CreateFromFile(typeof(Task<>).Assembly.Location),
+        MetadataReference.CreateFromFile(typeof(Task).Assembly.Location),
+        // Default netstandard assembly is required.
+        MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0").Location),
+        MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.1.0.0").Location),
+        MetadataReference.CreateFromFile(Assembly.GetCallingAssembly().Location),
+        MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location),
+    };
+
     /// <summary>
     /// Maps the <see cref="DynamicCodeConfig"/> class that is used internally.
     /// </summary>
@@ -123,14 +122,14 @@ public sealed class DynamicCodeService : IDynamicCodeService
     };
 
     /// <summary>
-    /// Returns a <see cref="List{MetadataReference}"/>. The <see cref="IDynamicCodeConfig.CustomAssemblies"/> is used alongside the static <see cref="_references"/> field to build a list of assemblies required for the <see cref="SyntaxTree"/> list.
+    /// Returns a <see cref="List{MetadataReference}"/>. The <see cref="IDynamicCodeConfig.CustomAssemblies"/> is used alongside the static <see cref="GetMetadataReferences"/> field to build a list of assemblies required for the <see cref="SyntaxTree"/> list.
     /// </summary>
     /// <param name="config"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     private async Task<List<MetadataReference>> GetAllAssembliesForSourceCodesAsync(IDynamicCodeConfig config, CancellationToken cancellationToken = default)
     {
-        var references = _references;
+        var references = GetMetadataReferences();
         foreach ((HttpClientHandler ClientHandler, ICollection<string> CustomAssemblies) in config.CustomAssemblies)
         {
             foreach (string assembly in CustomAssemblies)

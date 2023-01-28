@@ -696,7 +696,6 @@ public class CSharpAnalysisTests
         Assert.NotEmpty(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName!.Contains("TestUnloading", StringComparison.OrdinalIgnoreCase)));
     }
 
-    // TODO: This unit test sometimes fails. Need to investigate this.
     [Fact]
     public async Task Execute_Sample_Code_Use_Class_From_Different_Pre_Existing_Dll_Code()
     {
