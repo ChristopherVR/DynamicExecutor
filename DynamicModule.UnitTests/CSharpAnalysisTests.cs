@@ -724,7 +724,7 @@ public class CSharpAnalysisTests
         {
             c.SaveGeneratedCode = true;
             c.UnloadAssembly = false;
-            c.LoadExistingAssembly(Path.Combine(ExampleCodePath, "ScenarioFour", "TestUnloading.dll"));
+            c.LoadExistingAssembly(Path.Combine(ExampleCodePath, "ScenarioFour", "code.dll"));
             c.OutputDllName = "TooLegitToQuit";
         }, cancellationToken: CancellationToken.None);
 
