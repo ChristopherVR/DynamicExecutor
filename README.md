@@ -1,5 +1,5 @@
 <p align="center"> 
-  <img src="DynamicExecutor/public/logo512.png" alt="NET Logo" width="80px" height="80px">
+  <img src="https://github.com/devicons/devicon/blob/master/icons/dotnetcore/dotnetcore-original.svg" alt="NET Logo" width="80px" height="80px">
 </p>
 <h1 align="center"> Dynamic Code Compiler & Executor in C# .NET 7 </h1>
 <h3 align="center"> This is a demonstration on how to compile dynamic code and execute it at runtime. </h3>  
@@ -12,6 +12,7 @@
   <ol>
     <li><a href="#about-the-project"> ➤ About The Project</a></li>
     <li><a href="#prerequisites"> ➤ Prerequisites</a></li>
+    <li><a href="#prerequisites"> ➤ Examples</a></li>
   </ol>
 </details>
 
@@ -39,3 +40,32 @@ The following open source packages are used in this project:
 * <a href="https://github.com/dotnet/aspnetcore"> .NET 7</a> 
  
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+
+<!-- ROADMAP -->
+<h2 id="config"> :dart: Examples</h2>
+
+<p align="justify"> 
+Executing a basic Console application:
+
+```
+// Use DI as required.
+IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, mockAnalyseCodeService, mockOptions);
+
+// Act
+int res = await dynamicService.ExecuteCodeAsync<int>($@"using System; Console.WriteLine(""Hello world!""); return int.Parse(args[0]);", c =>
+{
+    c.ExecuteAsConsoleApplication = true;
+}, cancellationToken: CancellationToken.None, new object[] { new string[] { "2" } });
+
+// Assert
+Assert.Equal(2, res);
+```
+
+
+See the unit tests file for more examples <a href="https://github.com/ChristopherVR/DynamicExecutor/blob/main/DynamicModule.UnitTests/CSharpAnalysisTests.cse"> here</a>.
+
+</p>
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
