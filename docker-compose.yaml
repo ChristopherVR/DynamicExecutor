@@ -1,0 +1,8 @@
+name: dynamic-module
+
+services:
+  dynamic:
+    image: ${DOCKER_REGISTRY}dynamic:${TAG}
+    build:
+      context: .
+      dockerfile: DynamicModule.UnitTests/Dockerfile
