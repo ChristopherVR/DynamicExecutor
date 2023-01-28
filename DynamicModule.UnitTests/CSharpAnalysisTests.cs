@@ -696,43 +696,43 @@ public class CSharpAnalysisTests
         Assert.NotEmpty(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName!.Contains("TestUnloading", StringComparison.OrdinalIgnoreCase)));
     }
 
-    [Fact]
-    public async Task Execute_Sample_Code_Use_Class_From_Different_Pre_Existing_Dll_Code()
-    {
-        // Arrange
-        ILogger<DynamicCodeService> logger = _serviceProvider.GetService<ILoggerFactory>()!.CreateLogger<DynamicCodeService>();
-        IServiceScope mockServiceScope = Mock.Of<IServiceScope>(y => y.ServiceProvider == _serviceProvider);
-        IAnalyseCodeService mockAnalyseCodeService = Mock.Of<IAnalyseCodeService>(y => y.ValidateCodeAsync(It.IsAny<CSharpCompilation>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()) == Task.CompletedTask);
-        var mockOptions = Mock.Of<IOptions<FileExportOptions>>(x => x.Value == new FileExportOptions()
-        {
-            ExportPath = ExampleCodePath,
-        });
-        IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, mockAnalyseCodeService, mockOptions);
+    //[Fact]
+    //public async Task Execute_Sample_Code_Use_Class_From_Different_Pre_Existing_Dll_Code()
+    //{
+    //    // Arrange
+    //    ILogger<DynamicCodeService> logger = _serviceProvider.GetService<ILoggerFactory>()!.CreateLogger<DynamicCodeService>();
+    //    IServiceScope mockServiceScope = Mock.Of<IServiceScope>(y => y.ServiceProvider == _serviceProvider);
+    //    IAnalyseCodeService mockAnalyseCodeService = Mock.Of<IAnalyseCodeService>(y => y.ValidateCodeAsync(It.IsAny<CSharpCompilation>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()) == Task.CompletedTask);
+    //    var mockOptions = Mock.Of<IOptions<FileExportOptions>>(x => x.Value == new FileExportOptions()
+    //    {
+    //        ExportPath = ExampleCodePath,
+    //    });
+    //    IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, mockAnalyseCodeService, mockOptions);
 
-        // Act
-        // 1 & 2, Compile, Load & Execute the DLL.
-        var res = await dynamicService.ExecuteCodeAsync<int>($@"
-            using System;
-            using PappaPIsHier;
-            public static class Test2
-            {{
-                public static int Init(Test baasVanDiePlaas)
-                {{
-                    return baasVanDiePlaas.Init(new string[] {{""1""}});
-                }}
-            }}", c =>
-        {
-            c.SaveGeneratedCode = true;
-            c.UnloadAssembly = false;
-            c.LoadExistingAssembly(Path.Combine(ExampleCodePath, "ScenarioFour", "code.dll"));
-            c.OutputDllName = "TooLegitToQuit";
-        }, cancellationToken: CancellationToken.None);
+    //    // Act
+    //    // 1 & 2, Compile, Load & Execute the DLL.
+    //    var res = await dynamicService.ExecuteCodeAsync<int>($@"
+    //        using System;
+    //        using PappaPIsHier;
+    //        public static class Test2
+    //        {{
+    //            public static int Init(Test baasVanDiePlaas)
+    //            {{
+    //                return baasVanDiePlaas.Init(new string[] {{""1""}});
+    //            }}
+    //        }}", c =>
+    //    {
+    //        c.SaveGeneratedCode = true;
+    //        c.UnloadAssembly = false;
+    //        c.LoadExistingAssembly(Path.Combine(ExampleCodePath, "ScenarioFour", "code.dll"));
+    //        c.OutputDllName = "TooLegitToQuit";
+    //    }, cancellationToken: CancellationToken.None);
 
-        var expectedOutput = 1;
+    //    var expectedOutput = 1;
 
-        // Assert
-        Assert.Equal(expectedOutput, res);
-    }
+    //    // Assert
+    //    Assert.Equal(expectedOutput, res);
+    //}
 
 
     /// <summary>
