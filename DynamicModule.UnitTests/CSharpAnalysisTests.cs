@@ -123,7 +123,7 @@ public class CSharpAnalysisTests
 
         IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, mockAnalyseCodeService, mockOptions);
 
-        var sourceCode = await File.ReadAllTextAsync($"{ExampleCodePath}\\ScenarioOne\\SampleCode.cs");
+        var sourceCode = await File.ReadAllTextAsync(Path.Combine(ExampleCodePath, "ScenarioOne", "SampleCode.cs"));
 
         var expectedConnString = "DbConnectionTest:ThisIsRandomCharacters.";
 
@@ -163,7 +163,7 @@ public class CSharpAnalysisTests
 
         IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, mockAnalyseCodeService, mockOptions);
 
-        var sourceCode = await File.ReadAllTextAsync($"{ExampleCodePath}\\ScenarioOne\\SampleCode.cs");
+        var sourceCode = await File.ReadAllTextAsync(Path.Combine(ExampleCodePath, "ScenarioOne", "SampleCode.cs"));
 
         var expectedConnString = "DbConnectionTest:ThisIsRandomCharacterss.";
 
@@ -204,7 +204,7 @@ public class CSharpAnalysisTests
 
         IDynamicCodeService dynamicService = new DynamicCodeService(logger, _httpContextAccesor, mockServiceScope, codeService, mockOptions);
 
-        var sourceCode = await File.ReadAllTextAsync($"{ExampleCodePath}\\ScenarioTwo\\SampleCodeWithWarnings.txt");
+        var sourceCode = await File.ReadAllTextAsync(Path.Combine(ExampleCodePath, "ScenarioTwo", "SampleCodeWithWarnings.txt"));
 
         CodeAnalysisResult? analysis = default;
         // Act
@@ -382,7 +382,7 @@ public class CSharpAnalysisTests
         // Act
         IList<InvocationResult> res = await dynamicService.ExecuteCodeAsync(c =>
         {
-            c.FolderPath = $"{ExampleCodePath}\\ScenarioThree";
+            c.FolderPath = Path.Combine(ExampleCodePath, "ScenarioThree");
             c.TreatWarningsAsErrors = true;
         });
 
@@ -724,7 +724,7 @@ public class CSharpAnalysisTests
         {
             c.SaveGeneratedCode = true;
             c.UnloadAssembly = false;
-            c.LoadExistingAssembly($"{ExampleCodePath}\\ScenarioFour\\TestUnloading.dll");
+            c.LoadExistingAssembly(Path.Combine(ExampleCodePath, "ScenarioFour", "TestUnloading.dll"));
             c.OutputDllName = "TooLegitToQuit";
         }, cancellationToken: CancellationToken.None);
 
