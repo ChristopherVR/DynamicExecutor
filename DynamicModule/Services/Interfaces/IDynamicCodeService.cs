@@ -11,7 +11,7 @@ public interface IDynamicCodeService
     /// <param name="config">Settings to take into account when generating and executing the dynamic code.</param>
     /// <exception cref="Exceptions.DynamicCodeException">Thrown when an error occured during the generation of the dynamic code.</exception> 
     /// <exception cref="Exception">Thrown when an error occured during the generation of the dynamic code.</exception> 
-    /// <returns>A list of <see cref="InvocationResult"/> that indicates the Fullname of the type invoked as well as the output value.
+    /// <returns>A list of <see cref="InvocationResult"/> that indicates the Fullname of the type invoked as well as the output value.</returns>
     IList<InvocationResult> ExecuteCode(Action<DynamicCodeConfig> config);
 
     /// <summary>
@@ -30,7 +30,7 @@ public interface IDynamicCodeService
     /// <param name="cancellationToken"><see cref="CancellationToken"/> to pass to prevent further execution in the event we stop.</param>
     /// <exception cref="Exceptions.DynamicCodeException">Thrown when an error occured during the generation of the dynamic code.</exception> 
     /// <exception cref="Exception">Thrown when an error occured during the generation of the dynamic code.</exception> 
-    /// <returns>A list of <see cref="InvocationResult"/> that indicates the Fullname of the type invoked as well as the output value.
+    /// <returns>A list of <see cref="InvocationResult"/> that indicates the Fullname of the type invoked as well as the output value.</returns>
     Task<IList<InvocationResult>> ExecuteCodeAsync(Action<DynamicCodeConfig> config, CancellationToken cancellationToken = default);
 
     /// <summary>
