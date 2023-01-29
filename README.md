@@ -12,7 +12,8 @@
   <ol>
     <li><a href="#about-the-project"> ➤ About The Project</a></li>
     <li><a href="#prerequisites"> ➤ Prerequisites</a></li>
-    <li><a href="#prerequisites"> ➤ Examples</a></li>
+    <li><a href="#setup"> ➤ Setup</a></li>
+    <li><a href="#examples"> ➤ Examples</a></li>
   </ol>
 </details>
 
@@ -42,11 +43,33 @@ The following open source packages are used in this project:
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 
-<!-- ROADMAP -->
-<h2 id="config"> :dart: Examples</h2>
+<h2 id="setup"> :computer: Setup</h2>
 
 <p align="justify"> 
-Executing a basic Console application:
+A: Register the AnalyseCodeService & DynamicCodeService on your startup:
+
+```
+builder.Services.AddSingleton<IAnalyseCodeService, AnalyseCodeService>();
+builder.Services.AddSingleton<IDynamicCodeService, DynamicCodeService>();
+```
+
+Note: IHttpContextAccessor is required for these services.
+
+B: View the *IDynamicCodeService* interface to see what method overload would be most appropriate for you to use.
+
+C: See the Examples on how to execute code in this service and retrieve a response.
+
+</p>
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+
+<!-- ROADMAP -->
+<h2 id="examples"> :dart: Examples</h2>
+
+<p align="justify"> 
+
+* Executing a basic Console application:
 
 ```
 // Use DI as required.
@@ -61,7 +84,6 @@ int res = await dynamicService.ExecuteCodeAsync<int>($@"using System; Console.Wr
 // Assert
 Assert.Equal(2, res);
 ```
-
 
 See the unit tests file for more examples <a href="https://github.com/ChristopherVR/DynamicExecutor/blob/main/DynamicModule.UnitTests/CSharpAnalysisTests.cse"> here</a>.
 
