@@ -85,7 +85,7 @@ int res = await dynamicService.ExecuteCodeAsync<int>($@"using System; Console.Wr
 Assert.Equal(2, res);
 ```
 
-See the unit tests file for more examples <a href="https://github.com/ChristopherVR/DynamicExecutor/blob/main/DynamicModule.UnitTests/CSharpAnalysisTests.cse"> here</a>.
+See the unit tests file for more examples <a href="https://github.com/ChristopherVR/DynamicExecutor/blob/main/DynamicModule.UnitTests/CSharpAnalysisTests.cs"> here</a>.
 
 </p>
 
