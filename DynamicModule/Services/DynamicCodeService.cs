@@ -589,7 +589,7 @@ public sealed class DynamicCodeService : IDynamicCodeService
             if (propInfo.GetCustomAttributes(typeof(FromBodyAttribute), false).Any()
                && httpContext.Request.Body is not null)
             {
-                using var sr = new StreamReader(httpContext.Request.Body);
+                using var sr = new StreamReader(httpContext.Request.Body!);
                 string body = sr.ReadToEnd();
                 object? data = System.Text.Json.JsonSerializer.Deserialize(body, propInfo.ParameterType);
 
