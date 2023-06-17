@@ -528,7 +528,7 @@ public sealed class DynamicCodeService : IDynamicCodeService
     /// <returns></returns>
     private object? GetParameterValue(ParameterInfo propInfo, Assembly assembly, CancellationToken token)
     {
-        IServiceProvider serviceProvider = (_context.HttpContext.RequestServices ?? _serviceProvider.ServiceProvider)!;
+        IServiceProvider serviceProvider = (_context.HttpContext?.RequestServices ?? _serviceProvider.ServiceProvider)!;
 
         string? name = propInfo.Name?.ToUpperInvariant();
         if (serviceProvider.GetService(propInfo.ParameterType) is not null)
